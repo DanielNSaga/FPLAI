@@ -1,93 +1,35 @@
 package com.fploptimizer.fplai.model;
 
-import jakarta.persistence.*;
+import lombok.Data;
 
 /**
- * Represents a transfer in the Fantasy Premier League AI system.
+ * Represents a transfer option in the Fantasy Premier League AI system.
  */
-@Entity
+@Data
 public class Transfer {
+    private Player playerOut;
+    private Player playerIn;
+
+    public Transfer(Player playerOut, Player playerIn) {
+        this.playerOut = playerOut;
+        this.playerIn = playerIn;
+    }
 
     /**
-     * The unique identifier for the transfer.
+     * Calculates the difference in predicted points between the player coming into the team and the player going out.
+     *
+     * @return the difference in predicted points
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transferId;
+    public double getPointDifference() {
+        return playerIn.getPrediction() - playerOut.getPrediction();
+    }
 
     /**
-     * The player being transferred out.
+     * Calculates the difference in cost between the player coming into the team and the player going out.
+     *
+     * @return the difference in cost
      */
-    @ManyToOne
-    private Player fromPlayer;
-
-    /**
-     * The player being transferred in.
-     */
-    @ManyToOne
-    private Player toPlayer;
-
-    /**
-     * The cost associated with the transfer.
-     */
-    private Double cost;
-
-    /**
-     * Predicted Points gained for the transfer.
-     */
-    private Double predictedPointChange;
-
-    // Default constructor
-    public Transfer() {}
-
-    // Constructor with fields
-    public Transfer(Player fromPlayer, Player toPlayer, Double cost, Double predictedPointChange) {
-        this.fromPlayer = fromPlayer;
-        this.toPlayer = toPlayer;
-        this.cost = cost;
-        this.predictedPointChange = predictedPointChange;
-    }
-
-    // Getters and Setters
-
-    public Long getTransferId() {
-        return transferId;
-    }
-
-    public void setTransferId(Long transferId) {
-        this.transferId = transferId;
-    }
-
-    public Player getFromPlayer() {
-        return fromPlayer;
-    }
-
-    public void setFromPlayer(Player fromPlayer) {
-        this.fromPlayer = fromPlayer;
-    }
-
-    public Player getToPlayer() {
-        return toPlayer;
-    }
-
-    public void setToPlayer(Player toPlayer) {
-        this.toPlayer = toPlayer;
-    }
-
-    public Double getCost() {
-        return cost;
-    }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }
-
-    public Double getPredictedPointChange() {
-        return predictedPointChange;
-    }
-
-    public void setPredictedPointChange(Double predictedPointChange) {
-        this.predictedPointChange = predictedPointChange;
+    public double getCostDifference() {
+        return playerIn.getNowCost() - playerOut.getNowCost();
     }
 }
-
