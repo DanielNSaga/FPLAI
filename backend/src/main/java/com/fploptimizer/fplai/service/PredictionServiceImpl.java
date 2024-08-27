@@ -368,7 +368,6 @@ public class PredictionServiceImpl implements PredictionService {
     /**
      * Initializes the prediction service by triggering model training.
      */
-    @PostConstruct
     public void init() {
         trainModels();
     }

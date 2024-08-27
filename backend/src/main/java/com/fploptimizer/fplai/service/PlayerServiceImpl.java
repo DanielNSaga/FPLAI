@@ -73,8 +73,8 @@ public class PlayerServiceImpl implements PlayerService {
      * fetching the current event, and generating player predictions.
      */
     @Scheduled(cron = "0 0 2 * * ?")
-    @Transactional
     @PostConstruct
+    @Transactional
     public void init() {
         try {
             // Step 1: Initialize teams
