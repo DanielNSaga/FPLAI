@@ -26,7 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 // Allow requests from the specified origin
-                .allowedOrigins("https://fplai.vercel.app")
+                .allowedOrigins("https://fplai.vercel.app",
+                                "https://fplai-naf5jpmf6-danielnsagas-projects.vercel.app")
                 // Allow the following HTTP methods
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 // Allow credentials such as cookies or HTTP authentication
