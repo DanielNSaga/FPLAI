@@ -51,7 +51,7 @@ const OptimizeTeam = () => {
 
         try {
             // Send a POST request to optimize the team
-            const response = await axios.post('http://localhost:8080/api/teams/optimize', teamRequest);
+            const response = await axios.post('https://fplai.onrender.com/api/teams/optimize', teamRequest);
             setApiPlayers(response.data.players); // Update the players with the API response
         } catch (error) {
             console.error('Error optimizing team:', error.response ? error.response.data : error.message);

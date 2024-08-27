@@ -55,7 +55,7 @@ class SearchableBox extends Component {
         const { searchQuery } = this.state;
         const { elementType } = this.props;
 
-        axios.get('http://localhost:8080/api/players/search', {
+        axios.get('https://fplai.onrender.com/api/players/search', {
             params: {
                 elementType,
                 keyword: searchQuery,

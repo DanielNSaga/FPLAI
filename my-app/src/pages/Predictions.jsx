@@ -13,7 +13,7 @@ const Predictions = () => {
 
     useEffect(() => {
         // Fetch players from the API
-        fetch('http://localhost:8080/api/players')
+        fetch('https://fplai.onrender.com/api/players')
             .then(response => {
                 console.log(response); // Log the entire response for debugging
                 if (!response.ok) {
