@@ -18,7 +18,6 @@ import java.util.List;
  * based on player selections, budget, and available transfers.</p>
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/api/teams")
 public class TeamController {
 

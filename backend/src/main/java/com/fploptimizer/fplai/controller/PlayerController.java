@@ -15,7 +15,6 @@ import java.util.List;
  * to perform operations related to players.</p>
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/api/players")
 public class PlayerController {
 
