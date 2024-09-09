@@ -78,7 +78,7 @@ public class PlayerServiceImpl implements PlayerService {
     public void init() {
         try {
             // Step 1: Initialize teams
-            playerTeamService.initializeTeams();
+            playerTeamService.fetchTeams();
 
             // Step 2: Fetch fixtures for the current season
             fixtureService.fetchFixturesForCurrentSeason();
