@@ -277,6 +277,3 @@ def get_standings_data():
     }
     standings_df = pd.DataFrame(standings_data)
     return standings_df
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)

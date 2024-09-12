@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port that the Flask application will run on
-EXPOSE 5000
+EXPOSE 8000
 
 # Run the application with Gunicorn as the production server
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "fpl_prediction_model:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "fpl_prediction_model:app"]
