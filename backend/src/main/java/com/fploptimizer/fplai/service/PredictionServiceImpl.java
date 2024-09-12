@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * retrieving these predictions from a Python-based API, and storing them in the database.
  */
 @Service
-public class PredictionServiceImpl implements PredictionService {
+public class    PredictionServiceImpl implements PredictionService {
 
     private static final Logger logger = LoggerFactory.getLogger(PredictionServiceImpl.class);
 
