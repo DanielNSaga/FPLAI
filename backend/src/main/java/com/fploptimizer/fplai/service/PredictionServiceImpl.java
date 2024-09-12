@@ -221,7 +221,7 @@ public class    PredictionServiceImpl implements PredictionService {
      * @throws Exception if an error occurs during the HTTP request or JSON parsing
      */
     public List<Double> getPredictionsFromPython(List<PlayerData> playerDataList) throws Exception {
-        URL url = new URL("http://localhost:5000/predict");
+        URL url = new URL("https://ai-model-yfhb.onrender.com/predict");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -343,7 +343,7 @@ public class    PredictionServiceImpl implements PredictionService {
     @Override
     public void trainModels() {
         try {
-            URL url = new URL("http://localhost:5000/train");
+            URL url = new URL("https://ai-model-yfhb.onrender.com/train");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
