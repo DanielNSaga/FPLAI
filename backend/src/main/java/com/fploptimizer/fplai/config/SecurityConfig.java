@@ -41,8 +41,9 @@ public class SecurityConfig {
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless sessions
-                .authorizeHttpRequests(req -> req.anyRequest().authenticated()) // Require authentication for all requests
-                .httpBasic(httpBasic -> httpBasic.realmName("FPL")); // Updated way to configure HTTP Basic
+                .authorizeHttpRequests(req -> req
+                        .anyRequest().permitAll()) // Allow all requests
+                .httpBasic(AbstractHttpConfigurer::disable); // Disable HTTP Basic Authentication
 
         return http.build();
     }
