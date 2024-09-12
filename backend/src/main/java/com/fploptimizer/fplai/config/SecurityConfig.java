@@ -36,13 +36,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Legg til CORS-konfigurasjon
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .exceptionHandling(c -> c.authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless sessions
                 .authorizeHttpRequests(req -> req.anyRequest().authenticated()) // Require authentication for all requests
-                .httpBasic(httpBasic -> httpBasic.realmName("FPL-Optimizer")); // Updated way to configure HTTP Basic
+                .httpBasic(httpBasic -> httpBasic.realmName("FPL")); // Updated way to configure HTTP Basic
 
         return http.build();
     }
@@ -65,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://fplai-1.onrender.com/")); // Spesifikk opprinnelse
+        configuration.setAllowedOrigins(Collections.singletonList("https://fplai-1.onrender.com")); // Spesifikk opprinnelse
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Tillatte HTTP-metoder
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Content-Type-Options", "Accept", "X-Requested-With", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")); // Tillatte headere
         configuration.setAllowCredentials(true); // Tillat informasjonskapsler og autentisering
