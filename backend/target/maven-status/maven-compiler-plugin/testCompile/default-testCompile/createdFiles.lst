@@ -1,0 +1,8 @@
+com/fploptimizer/fplai/service/PlayerTeamServiceImplTest.class
+com/fploptimizer/fplai/service/TeamServiceImplTest.class
+com/fploptimizer/fplai/service/PredictionServiceImplTest.class
+com/fploptimizer/fplai/FplaiApplicationTests.class
+com/fploptimizer/fplai/service/PlayerServiceImplTest.class
+com/fploptimizer/fplai/service/EventServiceImplTest.class
+com/fploptimizer/fplai/service/FixtureServiceImplTest.class
+com/fploptimizer/fplai/service/TransferServiceImplTest.class
