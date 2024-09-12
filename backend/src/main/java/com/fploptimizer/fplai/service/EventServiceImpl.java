@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class EventServiceImpl implements EventService {
      * (such as season, gameweek, and total players) and stores this information
      * in the event repository.
      */
+    @Transactional
     @Override
     public void fetchCurrentEvent() {
         HttpHeaders headers = new HttpHeaders();
@@ -113,6 +115,7 @@ public class EventServiceImpl implements EventService {
      * @return the current or most recent Event
      * @throws ResourceNotFoundException if no current event is found in the repository
      */
+    @Transactional
     @Override
     public Event getCurrentEvent() {
         return (Event) eventRepository.findTopByOrderByGameweekDesc()

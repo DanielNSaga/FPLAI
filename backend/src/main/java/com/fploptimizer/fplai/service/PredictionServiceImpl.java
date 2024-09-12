@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.OutputStream;
 import java.io.InputStreamReader;
@@ -266,6 +267,7 @@ public class    PredictionServiceImpl implements PredictionService {
      * This method gathers player data, fetches predictions from a Python service,
      * and updates the player records with these predictions.
      */
+    @Transactional
     @Override
     public void generateAndSavePlayerPredictions() {
         List<PlayerData> allPlayerData = new ArrayList<>();
@@ -312,7 +314,8 @@ public class    PredictionServiceImpl implements PredictionService {
      *
      * @param playerDataList a list of PlayerData objects containing the new predictions
      */
-    private void updatePlayersWithPredictions(List<PlayerData> playerDataList) {
+    @Transactional
+    protected void updatePlayersWithPredictions(List<PlayerData> playerDataList) {
         playerDataList.stream()
                 .collect(Collectors.groupingBy(PlayerData::getId))
                 .forEach((playerId, playerDataGroup) -> {

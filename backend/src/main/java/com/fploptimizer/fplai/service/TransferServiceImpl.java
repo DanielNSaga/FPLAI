@@ -6,6 +6,7 @@ import com.fploptimizer.fplai.model.Transfer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,6 +46,7 @@ public class TransferServiceImpl implements TransferService {
      * @param team               the user's team to ensure max three players per real team.
      * @return a list of the best transfers.
      */
+    @Transactional
     @Override
     public List<Transfer> findBestTransfers(List<Transfer> potentialTransfers, double budget, int transfers, Team team) {
         try {
@@ -83,6 +85,7 @@ public class TransferServiceImpl implements TransferService {
      * @param team the team for which to generate potential transfers.
      * @return a list of potential transfers.
      */
+    @Transactional
     @Override
     public List<Transfer> generatePotentialTransfers(Team team) {
         try {
@@ -170,6 +173,7 @@ public class TransferServiceImpl implements TransferService {
      * @param team          the user's team.
      * @param bestTransfers the list of best transfers to apply.
      */
+    @Transactional
     @Override
     public void applyTransfers(Team team, List<Transfer> bestTransfers) {
         try {

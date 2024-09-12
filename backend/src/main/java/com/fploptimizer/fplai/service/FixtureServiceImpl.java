@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import jakarta.annotation.PostConstruct;
 
@@ -93,6 +94,7 @@ public class FixtureServiceImpl implements FixtureService {
     /**
      * Fetches fixtures for the current season from an external API and saves them to the database.
      */
+    @Transactional
     @Override
     public void fetchFixturesForCurrentSeason() {
         HttpHeaders headers = new HttpHeaders();
@@ -151,6 +153,7 @@ public class FixtureServiceImpl implements FixtureService {
      * @param team the team for which to find the next fixture
      * @return the next Fixture for the specified team, or null if no upcoming fixture is found
      */
+    @Transactional
     @Override
     public Fixture findNextFixture(PlayerTeam team) {
         int currentGameweek = eventService.getCurrentEvent().getGameweek();
@@ -170,6 +173,7 @@ public class FixtureServiceImpl implements FixtureService {
      * @param currentGw the current gameweek from which to start retrieving upcoming fixtures
      * @return a list of upcoming Fixtures for the specified team, limited to the next five fixtures
      */
+    @Transactional
     @Override
     public List<Fixture> getNextFixtures(PlayerTeam team, int currentGw) {
         List<Fixture> nextFixtures = new ArrayList<>();
