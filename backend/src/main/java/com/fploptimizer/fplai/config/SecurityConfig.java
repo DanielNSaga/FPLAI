@@ -65,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://your-frontend.com")); // Spesifikk opprinnelse
+        configuration.setAllowedOrigins(Collections.singletonList("https://fplai-1.onrender.com/")); // Spesifikk opprinnelse
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Tillatte HTTP-metoder
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Content-Type-Options", "Accept", "X-Requested-With", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")); // Tillatte headere
         configuration.setAllowCredentials(true); // Tillat informasjonskapsler og autentisering
