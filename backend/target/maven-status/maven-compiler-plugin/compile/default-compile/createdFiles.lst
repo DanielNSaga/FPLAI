@@ -26,6 +26,7 @@ com/fploptimizer/fplai/service/EventService.class
 com/fploptimizer/fplai/service/PlayerServiceImpl.class
 com/fploptimizer/fplai/service/PlayerTeamService.class
 com/fploptimizer/fplai/service/TeamServiceImpl.class
+com/fploptimizer/fplai/config/AsyncConfig.class
 com/fploptimizer/fplai/model/PlayerTeam.class
 com/fploptimizer/fplai/service/EventServiceImpl.class
 com/fploptimizer/fplai/model/Player.class
