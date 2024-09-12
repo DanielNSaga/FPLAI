@@ -5,7 +5,6 @@ com/fploptimizer/fplai/repository/EventRepository.class
 com/fploptimizer/fplai/model/Transfer.class
 com/fploptimizer/fplai/config/SecurityConfig.class
 com/fploptimizer/fplai/config/AppConfig.class
-com/fploptimizer/fplai/config/WebConfig.class
 com/fploptimizer/fplai/model/PlayerPrediction.class
 com/fploptimizer/fplai/repository/PlayerTeamRepository.class
 com/fploptimizer/fplai/model/TeamRequest.class

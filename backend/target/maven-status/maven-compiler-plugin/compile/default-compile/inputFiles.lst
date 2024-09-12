@@ -2,7 +2,6 @@
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/config/AppConfig.java
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/config/SchedulingConfig.java
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/config/SecurityConfig.java
-/Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/config/WebConfig.java
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/controller/PlayerController.java
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/controller/TeamController.java
 /Users/danielsaga/IdeaProjects/FPLAI/backend/src/main/java/com/fploptimizer/fplai/exception/ResourceNotFoundException.java
