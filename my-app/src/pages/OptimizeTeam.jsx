@@ -61,13 +61,15 @@ const OptimizeTeam = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-5xl font-extrabold mt-8 mb-4 text-center">Optimize Your Fantasy Premier League Team</h1>
-            <div className="flex flex-row w-full max-w-7xl mt-4">
-                <div className="w-1/2 p-4 flex items-center">
-                    <p className="text-gray-600 text-xl leading-loose" style={{ marginTop: '0%' }}>
+            <h1 className="text-3xl md:text-5xl font-extrabold mt-8 mb-4 text-center">
+                Optimize Your Fantasy Premier League Team
+            </h1>
+            <div className="flex flex-col md:flex-row w-full max-w-7xl mt-4">
+                <div className="w-full md:w-1/2 p-4 flex items-center">
+                    <p className="text-gray-600 text-base md:text-xl leading-loose">
                         <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
                         <br /><br />
-                        <strong>1. Select your team formation:</strong> Choose from the formations like 4-4-2 or 3-5-2 to set up your team structure.
+                        <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to set up your team structure.
                         <br /><br />
                         <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each position on your team. Ensure all 15 positions are filled.
                         <br /><br />
@@ -77,11 +79,11 @@ const OptimizeTeam = () => {
                         <br /><br />
                         <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team" button to see the best possible transfers and lineup based on your input.
                         <br /><br />
-                        This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance by using AI.
+                        This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance using AI.
                     </p>
                 </div>
 
-                <div className="w-1/2 p-4 flex flex-col items-center">
+                <div className="w-full md:w-1/2 p-4 flex flex-col items-center">
                     <FormationBar
                         selectedFormation={selectedFormation}
                         onFormationChange={handleFormationChange}
