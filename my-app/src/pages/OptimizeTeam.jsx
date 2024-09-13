@@ -153,9 +153,9 @@ const OptimizeTeam = () => {
                 </div>
                 {/* Mobile Layout */}
                 <div className="flex flex-col md:hidden">
-                    <div className="p-4 flex flex-col items-center">
+                    <div className="flex flex-col items-center">
                         {/* Instructions */}
-                        <p className="text-gray-600 text-base leading-loose mb-4">
+                        <p className="text-gray-600 text-base leading-loose mb-4 px-4">
                             <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy
                             Premier League team is in top shape:
                             <br />
