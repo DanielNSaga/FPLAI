@@ -46,7 +46,7 @@ public class TransferServiceImpl implements TransferService {
      * @param team               the user's team to ensure max three players per real team.
      * @return a list of the best transfers.
      */
-    @Transactional
+
     @Override
     public List<Transfer> findBestTransfers(List<Transfer> potentialTransfers, double budget, int transfers, Team team) {
         try {
