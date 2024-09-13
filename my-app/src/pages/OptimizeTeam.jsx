@@ -144,11 +144,13 @@ const OptimizeTeam = () => {
                             selectedFormation={selectedFormation}
                             onFormationChange={handleFormationChange}
                         />
-                        <TeamLayout
-                            formation={selectedFormation}
-                            onTeamChange={handleTeamChange}
-                            apiPlayers={apiPlayers}
-                        />
+                        <div className="w-full flex justify-center">
+                            <TeamLayout
+                                formation={selectedFormation}
+                                onTeamChange={handleTeamChange}
+                                apiPlayers={apiPlayers}
+                            />
+                        </div>
                         <BudgetTransferBar
                             budget={budget}
                             transfers={transfers}
