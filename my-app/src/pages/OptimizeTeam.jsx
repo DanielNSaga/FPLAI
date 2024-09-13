@@ -161,8 +161,8 @@ const OptimizeTeam = () => {
                             onFormationChange={handleFormationChange}
                         />
                         {/* Adjusted TeamLayout container */}
-                        <div className="w-full flex justify-center overflow-hidden px-2">
-                            <div className="w-full max-w-md">
+                        <div className="w-full flex justify-center overflow-hidden px-[1px]">
+                            <div className="w-full">
                                 <TeamLayout
                                     formation={selectedFormation}
                                     onTeamChange={handleTeamChange}
