@@ -1,41 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import PredictionList from '../components/PredictionList';  // Updated import path
+import PredictionList from '../components/PredictionList';
 
 /**
- * Predictions component fetches player data from the backend API
- * and displays a list of player predictions. Handles loading states
- * and potential errors during data fetching.
+ * The Predictions component fetches player data from the backend API
+ * and displays a list of player predictions. It handles loading states
+ * and potential errors during data fetching. Additionally, it displays
+ * the current gameweek for which the predictions are made.
  */
 const Predictions = () => {
     const [players, setPlayers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentEvent, setCurrentEvent] = useState(null); // State to store the current event
 
     useEffect(() => {
-        // Fetch players from the API
-        fetch('https://fplai.onrender.com/api/players')
-            .then(response => {
-                console.log(response); // Log the entire response for debugging
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
+        /**
+         * Fetches the current event and player data from the backend API.
+         * Updates the state with the fetched data or handles errors if any occur.
+         */
+        const fetchData = async () => {
+            try {
+                // Fetch the current event from the API
+                const eventResponse = await fetch('https://fplai.onrender.com/api/events/current');
+                if (!eventResponse.ok) {
+                    throw new Error(`Network response was not ok: ${eventResponse.statusText}`);
                 }
-                return response.text(); // Temporarily use .text() to inspect the content
-            })
-            .then(text => {
-                console.log(text); // Log the text to see if it's JSON or HTML
-                try {
-                    const data = JSON.parse(text);
-                    setPlayers(data);
-                } catch (e) {
-                    throw new Error("Failed to parse JSON: " + e.message);
+                const eventData = await eventResponse.json();
+                setCurrentEvent(eventData);
+
+                // Fetch players from the API
+                const playersResponse = await fetch('https://fplai.onrender.com/api/players');
+                if (!playersResponse.ok) {
+                    throw new Error(`Network response was not ok: ${playersResponse.statusText}`);
                 }
+                const playersData = await playersResponse.json();
+                setPlayers(playersData);
                 setLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
                 setError(error);
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchData();
     }, []);
 
     if (loading) {
@@ -48,6 +56,11 @@ const Predictions = () => {
 
     return (
         <div>
+            {currentEvent && (
+                <h2 className="text-2xl font-bold mt-4 mb-4 text-center">
+                    Predictions for {currentEvent.id}
+                </h2>
+            )}
             <PredictionList players={players} />
         </div>
     );

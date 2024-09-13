@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormationBar from '../components/FormationBar';
 import TeamLayout from '../components/TeamLayout';
 import BudgetTransferBar from '../components/BudgetTransferBar';
-import OptimizeTeamButton from "../components/OptimizeTeamButton";
+import OptimizeTeamButton from '../components/OptimizeTeamButton';
 import axios from 'axios';
 
 /**
- * OptimizeTeam component allows users to optimize their Fantasy Premier League team
+ * The OptimizeTeam component allows users to optimize their Fantasy Premier League team
  * by selecting a formation, assigning players, setting a budget, and specifying transfers.
- * The component communicates with a backend API to optimize the team based on the user's inputs.
+ * It communicates with a backend API to optimize the team based on the user's inputs.
+ * Additionally, it displays the current gameweek for which the optimization is performed.
  */
 const OptimizeTeam = () => {
     const [budget, setBudget] = useState('');
@@ -17,11 +18,32 @@ const OptimizeTeam = () => {
     const [team, setTeam] = useState([]); // State to store the team
     const [error, setError] = useState('');
     const [apiPlayers, setApiPlayers] = useState([]); // State to store players from API response
+    const [currentEvent, setCurrentEvent] = useState(null); // State to store the current event (gameweek)
+
+    useEffect(() => {
+        /**
+         * Fetches the current event (gameweek) from the backend API and updates the state.
+         */
+        const fetchCurrentEvent = async () => {
+            try {
+                const response = await axios.get('https://fplai.onrender.com/api/events/current');
+                setCurrentEvent(response.data);
+            } catch (error) {
+                console.error('Error fetching current event:', error.response ? error.response.data : error.message);
+            }
+        };
+
+        fetchCurrentEvent();
+    }, []);
 
     const handleBudgetChange = (e) => setBudget(e.target.value);
     const handleTransfersChange = (e) => setTransfers(e.target.value);
     const handleFormationChange = (formation) => setSelectedFormation(formation);
 
+    /**
+     * Updates the team state when players are assigned or changed.
+     * @param {Array} updatedTeam - The updated team array.
+     */
     const handleTeamChange = (updatedTeam) => {
         setTeam(updatedTeam);
     };
@@ -31,22 +53,22 @@ const OptimizeTeam = () => {
      * to the backend API, which returns the optimized team configuration.
      */
     const handleOptimizeTeam = async () => {
-        // Check if all necessary inputs are filled and all 15 players are assigned
-        const isValid = budget && transfers && team.length === 15 && !team.some(box => !box.player);
+        // Validate that all necessary inputs are filled and all 15 players are assigned
+        const isValid = budget && transfers && team.length === 15 && !team.some((box) => !box.player);
 
         if (!isValid) {
-            setError('Please make sure all inputs are filled, including budget, transfers, and all 15 players.');
+            setError('Please ensure all inputs are filled, including budget, transfers, and all 15 players.');
             return;
         }
 
         setError('');
 
         // Prepare the request payload
-        const playerIds = team.map(box => box.player.id);
+        const playerIds = team.map((box) => box.player.id);
         const teamRequest = {
             budget: parseFloat(budget) * 10,
             transfers: parseInt(transfers, 10),
-            playerIds: playerIds
+            playerIds: playerIds,
         };
 
         try {
@@ -64,24 +86,43 @@ const OptimizeTeam = () => {
             <h1 className="text-5xl font-extrabold mt-8 mb-4 text-center">
                 Optimize Your Fantasy Premier League Team
             </h1>
+            {currentEvent && (
+                <h2 className="text-2xl font-bold mt-4 mb-4 text-center">
+                    Optimizing for {currentEvent.id}
+                </h2>
+            )}
             <div className="w-full max-w-7xl mt-4">
-                {/* PC Layout */}
+                {/* Desktop Layout */}
                 <div className="hidden md:flex flex-row">
                     <div className="w-1/2 p-4 flex items-center">
                         <p className="text-gray-600 text-xl leading-loose">
-                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
-                            <br /><br />
-                            <strong>1. Select your team formation:</strong> Choose from the formations like 4-4-2 or 3-5-2 to set up your team structure.
-                            <br /><br />
-                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each position on your team. Ensure all 15 positions are filled.
-                            <br /><br />
-                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player has increased in value, you will not receive the full sale price when transferring him out. Adjust your available budget accordingly to reflect this.
-                            <br /><br />
-                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have available for this gameweek.
-                            <br /><br />
-                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team" button to see the best possible transfers and lineup based on your input.
-                            <br /><br />
-                            This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance by using AI.
+                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy
+                            Premier League team is in top shape:
+                            <br />
+                            <br />
+                            <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to
+                            set up your team structure.
+                            <br />
+                            <br />
+                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each
+                            position on your team. Ensure all 15 positions are filled.
+                            <br />
+                            <br />
+                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player
+                            has increased in value, you will not receive the full sale price when transferring him out.
+                            Adjust your available budget accordingly to reflect this.
+                            <br />
+                            <br />
+                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have
+                            available for this gameweek.
+                            <br />
+                            <br />
+                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team"
+                            button to see the best possible transfers and lineup based on your input.
+                            <br />
+                            <br />
+                            This tool analyzes your selections and suggests the optimal transfers to maximize your
+                            team's performance using AI.
                         </p>
                     </div>
                     <div className="w-1/2 p-4 flex flex-col items-center">
@@ -112,23 +153,36 @@ const OptimizeTeam = () => {
                 </div>
                 {/* Mobile Layout */}
                 <div className="flex flex-col md:hidden">
-                    {/* Removed padding around TeamLayout */}
                     <div className="p-4 flex flex-col items-center">
                         {/* Instructions */}
                         <p className="text-gray-600 text-base leading-loose mb-4">
-                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
-                            <br /><br />
-                            <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to set up your team structure.
-                            <br /><br />
-                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each position on your team. Ensure all 15 positions are filled.
-                            <br /><br />
-                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player has increased in value, you will not receive the full sale price when transferring him out. Adjust your available budget accordingly to reflect this.
-                            <br /><br />
-                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have available for this gameweek.
-                            <br /><br />
-                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team" button to see the best possible transfers and lineup based on your input.
-                            <br /><br />
-                            This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance using AI.
+                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy
+                            Premier League team is in top shape:
+                            <br />
+                            <br />
+                            <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to
+                            set up your team structure.
+                            <br />
+                            <br />
+                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each
+                            position on your team. Ensure all 15 positions are filled.
+                            <br />
+                            <br />
+                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player
+                            has increased in value, you will not receive the full sale price when transferring him out.
+                            Adjust your available budget accordingly to reflect this.
+                            <br />
+                            <br />
+                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have
+                            available for this gameweek.
+                            <br />
+                            <br />
+                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team"
+                            button to see the best possible transfers and lineup based on your input.
+                            <br />
+                            <br />
+                            This tool analyzes your selections and suggests the optimal transfers to maximize your
+                            team's performance using AI.
                         </p>
                         <FormationBar
                             selectedFormation={selectedFormation}
