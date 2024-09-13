@@ -29,7 +29,10 @@ const OptimizeTeam = () => {
                 const response = await axios.get('https://fplai.onrender.com/api/events/current');
                 setCurrentEvent(response.data);
             } catch (error) {
-                console.error('Error fetching current event:', error.response ? error.response.data : error.message);
+                console.error(
+                    'Error fetching current event:',
+                    error.response ? error.response.data : error.message
+                );
             }
         };
 
@@ -45,6 +48,7 @@ const OptimizeTeam = () => {
      * @param {Array} updatedTeam - The updated team array.
      */
     const handleTeamChange = (updatedTeam) => {
+        console.log("Received updated team:", updatedTeam);
         setTeam(updatedTeam);
     };
 
@@ -53,11 +57,20 @@ const OptimizeTeam = () => {
      * to the backend API, which returns the optimized team configuration.
      */
     const handleOptimizeTeam = async () => {
+        console.log("Current team:", team);
+        console.log("Team length:", team.length);
+
         // Validate that all necessary inputs are filled and all 15 players are assigned
-        const isValid = budget && transfers && team.length === 15 && !team.some((box) => !box.player);
+        const isValid =
+            budget &&
+            transfers &&
+            team.length === 15 &&
+            !team.some((box) => !box.player);
 
         if (!isValid) {
-            setError('Please ensure all inputs are filled, including budget, transfers, and all 15 players.');
+            setError(
+                'Please ensure all inputs are filled, including budget, transfers, and all 15 players.'
+            );
             return;
         }
 
@@ -73,10 +86,16 @@ const OptimizeTeam = () => {
 
         try {
             // Send a POST request to optimize the team
-            const response = await axios.post('https://fplai.onrender.com/api/teams/optimize', teamRequest);
+            const response = await axios.post(
+                'https://fplai.onrender.com/api/teams/optimize',
+                teamRequest
+            );
             setApiPlayers(response.data.players); // Update the players with the API response
         } catch (error) {
-            console.error('Error optimizing team:', error.response ? error.response.data : error.message);
+            console.error(
+                'Error optimizing team:',
+                error.response ? error.response.data : error.message
+            );
             setError('An error occurred while optimizing the team. Please try again.');
         }
     };

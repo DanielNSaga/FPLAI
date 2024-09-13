@@ -44,7 +44,17 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
     }, [formation]);
 
     useEffect(() => {
-        onTeamChange(assignedPlayers);
+        // Sjekk om alle boksene har en spiller tildelt
+        const allPlayersAssigned = assignedPlayers.every(
+            (box) => box.player !== null && box.player !== undefined
+        );
+
+        if (allPlayersAssigned) {
+            console.log("All players assigned, calling onTeamChange with:", assignedPlayers);
+            onTeamChange(assignedPlayers);
+        } else {
+            console.log("Not all players are assigned yet.");
+        }
     }, [assignedPlayers, onTeamChange]);
 
     useEffect(() => {
@@ -57,7 +67,7 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
      * Clears all player positions when the formation changes.
      */
     const clearPlayerPositions = () => {
-        const newAssignedPlayers = assignedPlayers.map(box => ({
+        const newAssignedPlayers = assignedPlayers.map((box) => ({
             ...box,
             player: null,
         }));
@@ -72,17 +82,20 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
      * @param {number} id - The ID of the box position.
      */
     const handlePlayerAssign = (player, id) => {
-        const isDuplicate = assignedPlayers.some(box => box.player && box.player.id === player.id);
+        const isDuplicate = assignedPlayers.some(
+            (box) => box.player && box.player.id === player.id
+        );
 
         if (isDuplicate) {
             alert(`Player ${player.web_name} is already assigned to another position.`);
             return;
         }
 
-        const newAssignedPlayers = assignedPlayers.map(box =>
-            box.id === id ? { ...box, player } : box
+        setAssignedPlayers((prevAssignedPlayers) =>
+            prevAssignedPlayers.map((box) =>
+                box.id === id ? { ...box, player } : box
+            )
         );
-        setAssignedPlayers(newAssignedPlayers);
     };
 
     /**
@@ -93,30 +106,49 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
     const updatePlayersFromApi = (apiPlayers) => {
         console.log("API Players: ", apiPlayers);
 
-        let newAssignedPlayers = [...BOX_POSITIONS];
+        let newAssignedPlayers = [...assignedPlayers];
 
         // Sort players from the API based on their element type
         const sortedApiPlayers = {
-            GK: apiPlayers.filter(player => player.element_type === 1),
-            DEF: apiPlayers.filter(player => player.element_type === 2),
-            MID: apiPlayers.filter(player => player.element_type === 3),
-            FWR: apiPlayers.filter(player => player.element_type === 4),
+            GK: apiPlayers.filter((player) => player.element_type === 1),
+            DEF: apiPlayers.filter((player) => player.element_type === 2),
+            MID: apiPlayers.filter((player) => player.element_type === 3),
+            FWR: apiPlayers.filter((player) => player.element_type === 4),
         };
 
         console.log("Sorted API Players: ", sortedApiPlayers);
 
-        // Assign players to the correct positions based on their position label
-        newAssignedPlayers = newAssignedPlayers.map((box) => {
-            const positionPlayers = sortedApiPlayers[box.positionLabel];
-            if (positionPlayers && positionPlayers.length > 0) {
-                const player = positionPlayers.shift();
-                console.log(`Assigning ${player.web_name} to ${box.positionLabel} (Box ID: ${box.id})`);
-                return {
-                    ...box,
-                    player: player,
-                };
+        // For each position, assign players to boxes based on the formation
+        Object.keys(layout).forEach((positionLabel) => {
+            const count = layout[positionLabel]; // Number of players in this position according to the formation
+            const positionPlayers = sortedApiPlayers[positionLabel] || [];
+            const boxesOfPosition = newAssignedPlayers.filter(
+                (box) => box.positionLabel === positionLabel
+            );
+
+            // Assign players to field positions
+            for (let i = 0; i < count; i++) {
+                if (positionPlayers.length > 0 && boxesOfPosition[i]) {
+                    const player = positionPlayers.shift();
+                    console.log(
+                        `Assigning ${player.web_name} to ${positionLabel} (Box ID: ${boxesOfPosition[i].id})`
+                    );
+                    boxesOfPosition[i].player = player;
+                }
             }
-            return box;
+
+            // Assign remaining players to the bench
+            for (let i = count; i < boxesOfPosition.length; i++) {
+                if (positionPlayers.length > 0) {
+                    const player = positionPlayers.shift();
+                    console.log(
+                        `Assigning ${player.web_name} to Bench ${positionLabel} (Box ID: ${boxesOfPosition[i].id})`
+                    );
+                    boxesOfPosition[i].player = player;
+                } else {
+                    boxesOfPosition[i].player = null; // No player to assign
+                }
+            }
         });
 
         console.log("New Assigned Players: ", newAssignedPlayers);
@@ -131,7 +163,9 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
      * @returns {JSX.Element} A row of player boxes.
      */
     const renderRow = (elementType, count) => {
-        const fieldBoxes = assignedPlayers.filter(box => box.elementType === elementType).slice(0, count);
+        const fieldBoxes = assignedPlayers
+            .filter((box) => box.elementType === elementType)
+            .slice(0, count);
         return (
             <div className="flex justify-center space-x-4">
                 {fieldBoxes.map((box) => (
@@ -164,9 +198,13 @@ const TeamLayout = ({ formation, onTeamChange, apiPlayers = [] }) => {
      * @returns {JSX.Element} The bench of players.
      */
     const renderBench = () => {
-        const benchBoxes = assignedPlayers.filter(box => {
+        const benchBoxes = assignedPlayers.filter((box) => {
             const onFieldCount = layout[box.positionLabel] || 0;
-            return assignedPlayers.filter(b => b.elementType === box.elementType).indexOf(box) >= onFieldCount;
+            return (
+                assignedPlayers
+                    .filter((b) => b.elementType === box.elementType)
+                    .indexOf(box) >= onFieldCount
+            );
         });
 
         return (
