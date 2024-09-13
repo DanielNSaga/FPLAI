@@ -96,11 +96,19 @@ const OptimizeTeam = () => {
                 <div className="hidden md:flex flex-row">
                     <div className="w-1/2 p-4 flex items-center">
                         <p className="text-gray-600 text-xl leading-loose">
-                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy
-                            Premier League team is in top shape:
-                            <br />
-                            <br />
-                            {/* ...rest of the instructions... */}
+                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
+                            <br /><br />
+                            <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to set up your team structure.
+                            <br /><br />
+                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each position on your team. Ensure all 15 positions are filled.
+                            <br /><br />
+                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player has increased in value, you will not receive the full sale price when transferring him out. Adjust your available budget accordingly to reflect this.
+                            <br /><br />
+                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have available for this gameweek.
+                            <br /><br />
+                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team" button to see the best possible transfers and lineup based on your input.
+                            <br /><br />
+                            This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance using AI.
                         </p>
                     </div>
                     <div className="w-1/2 flex flex-col items-center">
@@ -134,11 +142,19 @@ const OptimizeTeam = () => {
                     <div className="flex flex-col items-center">
                         {/* Instructions */}
                         <p className="text-gray-600 text-base leading-loose mb-4 px-4">
-                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy
-                            Premier League team is in top shape:
-                            <br />
-                            <br />
-                            {/* ...rest of the instructions... */}
+                            <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
+                            <br /><br />
+                            <strong>1. Select your team formation:</strong> Choose from formations like 4-4-2 or 3-5-2 to set up your team structure.
+                            <br /><br />
+                            <strong>2. Assign players:</strong> Use the search boxes to find and assign players to each position on your team. Ensure all 15 positions are filled.
+                            <br /><br />
+                            <strong>3. Enter your budget:</strong> Enter your remaining budget. Remember when a player has increased in value, you will not receive the full sale price when transferring him out. Adjust your available budget accordingly to reflect this.
+                            <br /><br />
+                            <strong>4. Set your transfers:</strong> Specify the number of free transfers you have available for this gameweek.
+                            <br /><br />
+                            <strong>5. Optimize your team:</strong> Once everything is set, click the "Optimize Team" button to see the best possible transfers and lineup based on your input.
+                            <br /><br />
+                            This tool analyzes your selections and suggests the optimal transfers to maximize your team's performance using AI.
                         </p>
                         <FormationBar
                             selectedFormation={selectedFormation}
