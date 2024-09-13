@@ -14,6 +14,7 @@ com/fploptimizer/fplai/model/Fixture.class
 com/fploptimizer/fplai/service/TeamService.class
 com/fploptimizer/fplai/repository/PlayerRepository.class
 com/fploptimizer/fplai/controller/PlayerController.class
+com/fploptimizer/fplai/controller/EventController.class
 com/fploptimizer/fplai/exception/ResourceNotFoundException.class
 com/fploptimizer/fplai/controller/TeamController.class
 com/fploptimizer/fplai/repository/FixtureRepository.class
