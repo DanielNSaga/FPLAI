@@ -27,7 +27,7 @@ public class Player {
     private int id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
     private PlayerTeam team;
 
