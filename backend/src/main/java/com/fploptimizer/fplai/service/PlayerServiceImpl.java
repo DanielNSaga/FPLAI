@@ -8,7 +8,6 @@ import com.fploptimizer.fplai.repository.PlayerRepository;
 import com.fploptimizer.fplai.repository.PlayerTeamRepository;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,6 @@ public class PlayerServiceImpl implements PlayerService {
      * fetching the current event, and generating player predictions.
      */
     @Scheduled(cron = "0 0 2 * * ?")
-    @PostConstruct
     @Async
     @Transactional
     public void init() {

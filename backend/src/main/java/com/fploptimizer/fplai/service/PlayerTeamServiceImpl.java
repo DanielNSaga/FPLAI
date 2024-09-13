@@ -18,8 +18,19 @@ import java.util.*;
 
 /**
  * Service implementation for handling operations related to player teams.
- * This service is responsible for fetching team data, assigning fixtures to teams,
- * and calculating various team-related metrics.
+ * This service is responsible for fetching team data from the Fantasy Premier League API,
+ * assigning fixtures to teams, and calculating various team-related metrics.
+ *
+ * <p>This class interacts with the {@link FixtureRepository} and {@link PlayerTeamRepository}
+ * to manage data persistence and retrieve the necessary information for computations.
+ *
+ * <p>Key functionalities include:
+ * <ul>
+ *     <li>Fetching and saving team data from an external API.</li>
+ *     <li>Assigning fixtures to teams, with lazy loading handled for associated entities.</li>
+ *     <li>Calculating team strength and form based on fixtures and results.</li>
+ *     <li>Determining whether a team is playing a home game for a given gameweek.</li>
+ * </ul>
  */
 @Service
 public class PlayerTeamServiceImpl implements PlayerTeamService {
@@ -31,12 +42,24 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
     private final FixtureRepository fixtureRepository;
     private final PlayerTeamRepository playerTeamRepository;
 
+    /**
+     * Constructs a new {@code PlayerTeamServiceImpl} instance with the given parameters.
+     *
+     * @param restTemplate a {@link RestTemplate} instance used to fetch data from the API
+     * @param fixtureRepository a {@link FixtureRepository} instance used to manage fixture data
+     * @param playerTeamRepository a {@link PlayerTeamRepository} instance used to manage player team data
+     */
     public PlayerTeamServiceImpl(RestTemplate restTemplate, FixtureRepository fixtureRepository, PlayerTeamRepository playerTeamRepository) {
         this.restTemplate = restTemplate;
         this.fixtureRepository = fixtureRepository;
         this.playerTeamRepository = playerTeamRepository;
     }
 
+    /**
+     * Fetches team data from the Fantasy Premier League API and updates the player teams in the repository.
+     * <p>This method retrieves team information from the API and saves it into the database after clearing
+     * any existing data. Fixtures are then assigned to the teams.
+     */
     @Transactional
     @Override
     public void fetchTeams() {
@@ -87,6 +110,12 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         }
     }
 
+    /**
+     * Retrieves a player team by its name and initializes its fixtures (lazy-loaded relations).
+     *
+     * @param name the name of the player team
+     * @return the player team with the given name
+     */
     @Override
     @Transactional
     public PlayerTeam getPlayerTeamByName(String name) {
@@ -99,6 +128,12 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         return playerTeam;
     }
 
+    /**
+     * Retrieves a player team by its code and initializes its fixtures (lazy-loaded relations).
+     *
+     * @param teamCode the code of the player team
+     * @return the player team with the given code
+     */
     @Override
     @Transactional
     public PlayerTeam getPlayerTeamByCode(int teamCode) {
@@ -111,6 +146,13 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         return playerTeam;
     }
 
+    /**
+     * Calculates the strength of a team for a given gameweek based on its fixtures.
+     *
+     * @param team the player team
+     * @param gw the gameweek
+     * @return a strength rating between 1 and 3, based on team strength
+     */
     @Override
     @Transactional
     public int calculateTeamStrength(PlayerTeam team, int gw) {
@@ -140,6 +182,13 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         return 0; // Return 0 or an appropriate value if no fixture is found for the given gameweek
     }
 
+    /**
+     * Determines whether the team is playing a home game in the given gameweek.
+     *
+     * @param team the player team
+     * @param gw the gameweek
+     * @return true if the team is playing at home, false otherwise
+     */
     @Override
     @Transactional
     public boolean isHomeGame(PlayerTeam team, int gw) {
@@ -156,6 +205,14 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         return false; // Return false if no fixture is found for the given gameweek
     }
 
+    /**
+     * Calculates the form of a team based on the results of its fixtures up to a given gameweek.
+     * The form is determined by averaging the points (3 for win, 2 for draw, 1 for loss) over the past 5 fixtures.
+     *
+     * @param team the player team
+     * @param gw the gameweek
+     * @return the form of the team as a double value
+     */
     @Override
     @Transactional
     public double calculateTeamForm(PlayerTeam team, int gw) {
@@ -188,6 +245,11 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         return sum / results.size(); // Return the average of the results
     }
 
+    /**
+     * Assigns fixtures to teams by updating the home and away fixtures for each team.
+     * This method fetches all fixtures from the repository and adds them to the corresponding teams.
+     * It ensures that all teams associated with the fixtures are saved in the repository.
+     */
     @Transactional
     protected void assignFixturesToTeams() {
         List<Fixture> fixtures = fixtureRepository.findAll();
@@ -221,6 +283,10 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         logger.info("Assigned fixtures to teams.");
     }
 
+    /**
+     * Initializes all player teams by retrieving them from the repository.
+     * This method can be used to ensure that all player teams are loaded and ready for further operations.
+     */
     @Transactional
     @Override
     public void initializeTeams() {
@@ -228,6 +294,10 @@ public class PlayerTeamServiceImpl implements PlayerTeamService {
         logger.debug("Initialized {} teams.", teams.size());
     }
 
+    /**
+     * Updates teams with the latest fixtures by adding them to the respective teams.
+     * This method ensures that all fixtures are correctly assigned to their respective home and away teams.
+     */
     @Transactional
     @Override
     public void updateTeamsWithFixtures() {
