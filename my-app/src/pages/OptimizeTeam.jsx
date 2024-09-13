@@ -112,7 +112,7 @@ const OptimizeTeam = () => {
                 </div>
                 {/* Mobile Layout */}
                 <div className="flex flex-col md:hidden">
-                    {/* Adjust padding/margins to add space on the sides of TeamLayout */}
+                    {/* Adjust padding to 10mm on the sides of TeamLayout */}
                     <div className="p-4 flex flex-col items-center">
                         {/* Instructions */}
                         <p className="text-gray-600 text-base leading-loose mb-4">
@@ -134,7 +134,7 @@ const OptimizeTeam = () => {
                             selectedFormation={selectedFormation}
                             onFormationChange={handleFormationChange}
                         />
-                        <div className="w-full px-4">
+                        <div className="w-full" style={{ paddingLeft: '10mm', paddingRight: '10mm' }}>
                             <TeamLayout
                                 formation={selectedFormation}
                                 onTeamChange={handleTeamChange}
