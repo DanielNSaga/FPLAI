@@ -6,17 +6,17 @@ import OptimizeTeamButton from "../components/OptimizeTeamButton";
 import axios from 'axios';
 
 /**
- * OptimizeTeam komponent lar brukere optimalisere sitt Fantasy Premier League-lag
- * ved å velge formasjon, tildele spillere, sette budsjett og spesifisere overføringer.
- * Komponenten kommuniserer med en backend API for å optimalisere laget basert på brukerens input.
+ * OptimizeTeam component allows users to optimize their Fantasy Premier League team
+ * by selecting a formation, assigning players, setting a budget, and specifying transfers.
+ * The component communicates with a backend API to optimize the team based on the user's inputs.
  */
 const OptimizeTeam = () => {
     const [budget, setBudget] = useState('');
     const [transfers, setTransfers] = useState('');
     const [selectedFormation, setSelectedFormation] = useState('442');
-    const [team, setTeam] = useState([]); // State for å lagre laget
+    const [team, setTeam] = useState([]); // State to store the team
     const [error, setError] = useState('');
-    const [apiPlayers, setApiPlayers] = useState([]); // State for å lagre spillere fra API-respons
+    const [apiPlayers, setApiPlayers] = useState([]); // State to store players from API response
 
     const handleBudgetChange = (e) => setBudget(e.target.value);
     const handleTransfersChange = (e) => setTransfers(e.target.value);
@@ -27,21 +27,21 @@ const OptimizeTeam = () => {
     };
 
     /**
-     * Håndterer optimaliseringen av laget ved å sende gjeldende lagoppsett, budsjett og overføringer
-     * til backend API, som returnerer det optimaliserte lagoppsettet.
+     * Handles the optimization of the team by sending the current team setup, budget, and transfers
+     * to the backend API, which returns the optimized team configuration.
      */
     const handleOptimizeTeam = async () => {
-        // Sjekk om alle nødvendige input er fylt ut og alle 15 spillere er tildelt
+        // Check if all necessary inputs are filled and all 15 players are assigned
         const isValid = budget && transfers && team.length === 15 && !team.some(box => !box.player);
 
         if (!isValid) {
-            setError('Vennligst sørg for at alle felt er fylt ut, inkludert budsjett, overføringer og alle 15 spillere.');
+            setError('Please make sure all inputs are filled, including budget, transfers, and all 15 players.');
             return;
         }
 
         setError('');
 
-        // Forbered forespørselsdata
+        // Prepare the request payload
         const playerIds = team.map(box => box.player.id);
         const teamRequest = {
             budget: parseFloat(budget) * 10,
@@ -50,12 +50,12 @@ const OptimizeTeam = () => {
         };
 
         try {
-            // Send en POST-forespørsel for å optimalisere laget
+            // Send a POST request to optimize the team
             const response = await axios.post('https://fplai.onrender.com/api/teams/optimize', teamRequest);
-            setApiPlayers(response.data.players); // Oppdater spillerne med API-responsen
+            setApiPlayers(response.data.players); // Update the players with the API response
         } catch (error) {
-            console.error('Feil ved optimalisering av laget:', error.response ? error.response.data : error.message);
-            setError('En feil oppstod under optimalisering av laget. Vennligst prøv igjen.');
+            console.error('Error optimizing team:', error.response ? error.response.data : error.message);
+            setError('An error occurred while optimizing the team. Please try again.');
         }
     };
 
@@ -65,7 +65,7 @@ const OptimizeTeam = () => {
                 Optimize Your Fantasy Premier League Team
             </h1>
             <div className="w-full max-w-7xl mt-4">
-                {/* PC-layout */}
+                {/* PC Layout */}
                 <div className="hidden md:flex flex-row">
                     <div className="w-1/2 p-4 flex items-center">
                         <p className="text-gray-600 text-xl leading-loose">
@@ -92,7 +92,7 @@ const OptimizeTeam = () => {
                         <TeamLayout
                             formation={selectedFormation}
                             onTeamChange={handleTeamChange}
-                            apiPlayers={apiPlayers} // Send API-spillerne her
+                            apiPlayers={apiPlayers}
                         />
                         <BudgetTransferBar
                             budget={budget}
@@ -110,12 +110,11 @@ const OptimizeTeam = () => {
                         )}
                     </div>
                 </div>
-                {/* Mobil-layout */}
+                {/* Mobile Layout */}
                 <div className="flex flex-col md:hidden">
+                    {/* Adjust padding/margins to add space on the sides of TeamLayout */}
                     <div className="p-4 flex flex-col items-center">
-                        <h1 className="text-3xl font-extrabold mt-4 mb-4 text-center">
-                            Optimize Your Fantasy Premier League Team
-                        </h1>
+                        {/* Instructions */}
                         <p className="text-gray-600 text-base leading-loose mb-4">
                             <strong>Welcome to the team optimizer!</strong> Follow these steps to ensure your Fantasy Premier League team is in top shape:
                             <br /><br />
@@ -135,11 +134,13 @@ const OptimizeTeam = () => {
                             selectedFormation={selectedFormation}
                             onFormationChange={handleFormationChange}
                         />
-                        <TeamLayout
-                            formation={selectedFormation}
-                            onTeamChange={handleTeamChange}
-                            apiPlayers={apiPlayers} // Send API-spillerne her
-                        />
+                        <div className="w-full px-4">
+                            <TeamLayout
+                                formation={selectedFormation}
+                                onTeamChange={handleTeamChange}
+                                apiPlayers={apiPlayers}
+                            />
+                        </div>
                         <BudgetTransferBar
                             budget={budget}
                             transfers={transfers}
