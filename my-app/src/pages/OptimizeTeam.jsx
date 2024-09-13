@@ -82,7 +82,7 @@ const OptimizeTeam = () => {
     };
 
     return (
-        <div className="flex flex-col items-center overflow-x-hidden">
+        <div className="flex flex-col items-center">
             <h1 className="text-5xl font-extrabold mt-8 mb-4 text-center">
                 Optimize Your Fantasy Premier League Team
             </h1>
@@ -160,15 +160,12 @@ const OptimizeTeam = () => {
                             selectedFormation={selectedFormation}
                             onFormationChange={handleFormationChange}
                         />
-                        {/* Adjusted TeamLayout container */}
-                        <div className="w-full flex justify-center overflow-hidden px-[1px]">
-                            <div className="w-full">
-                                <TeamLayout
-                                    formation={selectedFormation}
-                                    onTeamChange={handleTeamChange}
-                                    apiPlayers={apiPlayers}
-                                />
-                            </div>
+                        <div className="w-full flex justify-center">
+                            <TeamLayout
+                                formation={selectedFormation}
+                                onTeamChange={handleTeamChange}
+                                apiPlayers={apiPlayers}
+                            />
                         </div>
                         <BudgetTransferBar
                             budget={budget}
