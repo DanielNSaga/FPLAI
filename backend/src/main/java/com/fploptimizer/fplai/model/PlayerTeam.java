@@ -26,15 +26,15 @@ public class PlayerTeam {
     @SerializedName("short_name")
     private String shortName;
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Player> players = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hometeam", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hometeam", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Fixture> homeFixtures = new ArrayList<>();
 
-    @OneToMany(mappedBy = "awayteam", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "awayteam", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Fixture> awayFixtures = new ArrayList<>();
 
